@@ -9,6 +9,9 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
+import lombok.Getter;
+
+@Getter
 public class Config {
     private Long AccessTokenTTL; // in minutes
     private Long RefreshTokenTTL; // in minutes
@@ -67,21 +70,5 @@ public class Config {
             throw new IllegalStateException("Config must be initialized first by calling Init().");
         }
         return configInstance;
-    }
-
-    public Long getAccessTokenTTL() {
-        return AccessTokenTTL;
-    }
-
-    public Long getRefreshTokenTTL() {
-        return RefreshTokenTTL;
-    }
-
-    public String getTokenSecretKey() {
-        return TokenSecretKey;
-    }
-
-    public String getTokenIssuer() {
-        return TokenIssuer;
     }
 }

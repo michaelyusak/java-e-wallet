@@ -17,6 +17,8 @@ import com.java_e_wallet.e_wallet_service.model.Token;
 import com.java_e_wallet.e_wallet_service.model.User;
 import com.java_e_wallet.e_wallet_service.repository.UserRepo;
 
+import jakarta.transaction.Transactional;
+
 
 @Service
 public class AuthService {
@@ -27,6 +29,8 @@ public class AuthService {
         this.userRepo = userRepo;
     }
 
+
+    @Transactional
     public User RegisterUser(UserRegistrationDTO newUser) {
         Optional<User> existingUser = userRepo.getUserByEmail(newUser.getEmail());
         if (existingUser.isPresent()) {

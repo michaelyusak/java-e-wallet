@@ -1,5 +1,8 @@
 package com.java_e_wallet.e_wallet_service.exception;
 
+import lombok.Getter;
+
+@Getter
 public class AppException extends RuntimeException {
     private int statusCode;
     private String message;
@@ -10,17 +13,5 @@ public class AppException extends RuntimeException {
         this.statusCode = statusCode;
         this.message = message;
         this.details = details;
-    }
-
-    public int getStatusCode() {
-        return statusCode;
-    }
-
-    public String getMessage() {
-        return message;
-    }
-
-    public String getDetails() {
-        return details;
     }
 }

@@ -11,21 +11,18 @@ import lombok.Getter;
 @Getter
 @Entity
 @Table
-public class User {
+public class Wallet {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "user_id")
+    @Column(name = "wallet_id", nullable = false)
+    private Long walletId;
+
+    @Column(name = "user_id", nullable = false)
     private Long userId;
 
-    @Column(name = "user_email", nullable = false)
-    private String userEmail;
-
-    @Column(name = "user_name", nullable = false)
-    private String userName;
-
-    @Column(name = "user_password", nullable = false)
-    private String userPassword;
+    @Column(name = "wallet_number", nullable = false)
+    private String walletNumber;
 
     @Column(name = "created_at", nullable = false)
     private Long createdAt;
@@ -36,12 +33,12 @@ public class User {
     @Column(name = "deleted_at", nullable = false)
     private Long deletedAt = 0L;
 
-    public User(
-            String userEmail,
-            String userName,
-            String userPassword) {
-        this.userEmail = userEmail;
-        this.userName = userName;
-        this.userPassword = userPassword;
+    public Wallet(
+            Long walletId,
+            Long userid,
+            String walletNumber) {
+        this.walletId = walletId;
+        this.userId = userid;
+        this.walletNumber = walletNumber;
     }
 }
