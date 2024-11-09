@@ -1,0 +1,6 @@
+{
+    "access_token_ttl": 60,
+    "refresh_token_ttl": 1440,
+    "token_secret_key": "secret",
+    "token_issuer": "issuer"
+}
