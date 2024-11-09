@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
+import com.java_e_wallet.e_wallet_service.model.CustomUserDetails;
 import com.java_e_wallet.e_wallet_service.model.User;
 
 import jakarta.transaction.Transactional;
@@ -24,4 +25,7 @@ public interface UserRepo extends JpaRepository<User, Long> {
 
     @Query(value = "SELECT user_name, user_email, created_at, deleted_at FROM users WHERE user_id = ?1", nativeQuery = true)
     Optional<User> getUserById(Long userId);
+
+    @Query(value = "SELECT user_name, user_password WHERE email = ?1 AND deleted_at = 0", nativeQuery = true)
+    Optional<CustomUserDetails> getDetailByEmail(String email);
 }

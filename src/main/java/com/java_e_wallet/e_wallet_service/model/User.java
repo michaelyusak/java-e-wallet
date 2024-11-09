@@ -47,4 +47,32 @@ public class User {
 
     public User() {
     }
+
+    // public Long getUserId() {
+    //     return userId;
+    // }
+
+    // public String getUserEmail() {
+    //     return userEmail;
+    // }
+
+    // public String getUserName() {
+    //     return userName;
+    // }
+
+    // public String getUserPassword() {
+    //     return userPassword;
+    // }
+
+    // public Long getCreatedAt() {
+    //     return createdAt;
+    // }
+
+    // public Long getUpdatedAt() {
+    //     return updatedAt;
+    // }
+
+    // public Long getDeletedAt() {
+    //     return deletedAt;
+    // }
 }
