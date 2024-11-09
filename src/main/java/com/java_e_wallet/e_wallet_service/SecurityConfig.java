@@ -16,6 +16,7 @@ public class SecurityConfig {
         http
             .authorizeRequests()
                 .requestMatchers(HttpMethod.GET, "/health").permitAll()
+                .requestMatchers(HttpMethod.POST, "/auth/**").permitAll()
                 .anyRequest().authenticated()
             .and()
                 .csrf().disable();
