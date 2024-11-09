@@ -17,4 +17,7 @@ public class Token {
         this.RefreshTokenEXP = refreshTokenEXP;
         this.UserId = userId;
     }
+
+    public Token() {
+    }
 }

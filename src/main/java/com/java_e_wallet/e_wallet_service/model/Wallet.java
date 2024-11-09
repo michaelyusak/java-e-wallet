@@ -41,4 +41,7 @@ public class Wallet {
         this.userId = userid;
         this.walletNumber = walletNumber;
     }
+
+    public Wallet() {
+    }
 }

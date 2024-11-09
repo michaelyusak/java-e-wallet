@@ -10,22 +10,22 @@ import lombok.Getter;
 
 @Getter
 @Entity
-@Table(name = "users")
-public class User {
+@Table(name = "balances")
+public class Balance {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "user_id")
-    private Long userId;
+    @Column(name = "balance_id")
+    private Long balance_id;
 
-    @Column(name = "user_email", nullable = false)
-    private String userEmail;
+    @Column(name = "wallet_id")
+    private Long walletId;
 
-    @Column(name = "user_name", nullable = false)
-    private String userName;
+    @Column(name = "asset")
+    private String asset;
 
-    @Column(name = "user_password", nullable = false)
-    private String userPassword;
+    @Column(name = "amount")
+    private double amount;
 
     @Column(name = "created_at", nullable = false)
     private Long createdAt;
@@ -36,15 +36,6 @@ public class User {
     @Column(name = "deleted_at", nullable = false)
     private Long deletedAt = 0L;
 
-    public User(
-            String userEmail,
-            String userName,
-            String userPassword) {
-        this.userEmail = userEmail;
-        this.userName = userName;
-        this.userPassword = userPassword;
-    }
-
-    public User() {
+    public Balance() {
     }
 }
