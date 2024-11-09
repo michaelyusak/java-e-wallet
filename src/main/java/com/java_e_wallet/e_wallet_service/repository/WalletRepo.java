@@ -15,5 +15,5 @@ public interface WalletRepo extends JpaRepository<Wallet, Long> {
     @Transactional
     @Modifying
     @Query(value = "INSERT INTO wallets (user_id, created_at, updated_at) VALUES (?1, ?2, ?2)", nativeQuery = true)
-    void CreateWallet(Long userId, Long now);
+    void createWallet(Long userId, Long now);
 }

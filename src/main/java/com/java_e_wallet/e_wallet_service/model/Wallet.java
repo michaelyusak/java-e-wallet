@@ -10,7 +10,7 @@ import lombok.Getter;
 
 @Getter
 @Entity
-@Table
+@Table(name = "wallets")
 public class Wallet {
 
     @Id

@@ -16,6 +16,7 @@ import com.java_e_wallet.e_wallet_service.helper.JWTHelper;
 import com.java_e_wallet.e_wallet_service.model.Token;
 import com.java_e_wallet.e_wallet_service.model.User;
 import com.java_e_wallet.e_wallet_service.repository.UserRepo;
+import com.java_e_wallet.e_wallet_service.repository.WalletRepo;
 
 import jakarta.transaction.Transactional;
 
@@ -23,10 +24,12 @@ import jakarta.transaction.Transactional;
 @Service
 public class AuthService {
     private final UserRepo userRepo;
+    private final WalletRepo walletRepo;
 
     @Autowired
-    public AuthService(UserRepo userRepo) {
+    public AuthService(UserRepo userRepo, WalletRepo walletRepo) {
         this.userRepo = userRepo;
+        this.walletRepo = walletRepo;
     }
 
 
@@ -46,7 +49,13 @@ public class AuthService {
             throw new AppException(HttpStatus.INTERNAL_SERVER_ERROR.value(), "something went wrong", "");
         }
 
-        return user.get();
+        User registeredUser = user.get();
+
+        Long now = Instant.now().toEpochMilli();
+
+        walletRepo.createWallet(registeredUser.getUserId(), now);
+
+        return registeredUser;
     }
 
     public Token Login(LoginRequestDTO loginRequest) {
