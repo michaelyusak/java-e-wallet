@@ -1,8 +1,11 @@
 package com.java_e_wallet.e_wallet_service;
 
 import java.time.Instant;
+import java.util.HashMap;
 import java.util.Optional;
 
+import org.json.simple.JSONObject;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
@@ -10,6 +13,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 import org.springframework.web.servlet.HandlerExceptionResolver;
 
+import com.java_e_wallet.e_wallet_service.dto.ErrorResponseDTO;
 import com.java_e_wallet.e_wallet_service.helper.JWTHelper;
 import com.java_e_wallet.e_wallet_service.model.CustomUserDetails;
 import com.java_e_wallet.e_wallet_service.model.User;
@@ -44,7 +48,19 @@ public class JWTAuthenticationFilter extends OncePerRequestFilter {
 
         try {
             if (authHeader == null || !authHeader.startsWith("Bearer ")) {
-                filterChain.doFilter(request, response);
+                ErrorResponseDTO res = new ErrorResponseDTO(HttpStatus.FORBIDDEN.value(), "need access token", "");
+
+                HashMap<String, Object> hashMap = new HashMap<String, Object>();
+                hashMap.put("status_code", (int) res.getStatusCode());
+                hashMap.put("message", (String) res.getMessage());
+
+                JSONObject jsonObject = new JSONObject(hashMap);
+                String jsonString = jsonObject.toJSONString();
+
+                response.addHeader("Content-Type", "application/json");
+                response.setStatus(HttpStatus.FORBIDDEN.value());
+                response.getWriter().write(jsonString);
+                response.getWriter().flush();
                 return;
             }
 
