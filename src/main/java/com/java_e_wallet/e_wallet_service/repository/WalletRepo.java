@@ -21,4 +21,7 @@ public interface WalletRepo extends JpaRepository<Wallet, Long> {
 
     @Query(value = "SELECT wallet_id, wallet_number, user_id, created_at, updated_at, deleted_at FROM wallets WHERE user_id = ?1 AND deleted_at = 0", nativeQuery = true)
     Optional<Wallet> getWalletByUserId(Long userId);
+
+    @Query(value = "SELECT wallet_id, wallet_number, user_id, created_at, updated_at, deleted_at FROM wallets WHERE wallet_number = ?1 AND deleted_at = 0", nativeQuery = true)
+    Optional<Wallet> getWalletByWalletNumber(String walletNumber);
 }

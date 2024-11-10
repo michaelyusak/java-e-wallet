@@ -16,7 +16,7 @@ public class Balance {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "balance_id")
-    private Long balance_id;
+    private Long balanceId;
 
     @Column(name = "wallet_id")
     private Long walletId;
