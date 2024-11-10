@@ -11,15 +11,37 @@ import lombok.Getter;
 
 @Getter
 public class CustomUserDetails implements UserDetails {
+    @Column(name = "id")
+    private final Long id;
+
     @Column(name = "name")
     private final String username;
+
+    @Column(name = "email")
+    private final String email;
 
     @Column(name = "password")
     private final String password;
 
-    public CustomUserDetails(String username, String password) {
+    public CustomUserDetails(Long id, String username, String email, String password) {
+        this.id = id;
         this.username = username;
+        this.email = email;
         this.password = password;
+    }
+
+    public CustomUserDetails(User user) {
+        this.id = user.getUserId();
+        this.username = user.getUserName();
+        this.email = user.getUserEmail();
+        this.password = user.getUserPassword();
+    }
+
+    public CustomUserDetails(CustomUserDetails user) {
+        this.id = user.getId();
+        this.username = user.getUsername();
+        this.email = user.getEmail();
+        this.password = user.getPassword();
     }
 
     @Override

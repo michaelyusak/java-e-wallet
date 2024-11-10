@@ -23,7 +23,7 @@ public interface UserRepo extends JpaRepository<User, Long> {
     @Query(value = "INSERT INTO users (user_email, user_name, user_password, created_at, updated_at) VALUES (?1, ?2, ?3, ?4, ?4)", nativeQuery = true)
     void registerUser(String email, String name, String password, Long now);
 
-    @Query(value = "SELECT user_name, user_email, created_at, deleted_at FROM users WHERE user_id = ?1", nativeQuery = true)
+    @Query(value = "SELECT user_id, user_name, user_email, user_password, created_at, updated_at, deleted_at FROM users WHERE user_id = ?1", nativeQuery = true)
     Optional<User> getUserById(Long userId);
 
     @Query(value = "SELECT user_name, user_password WHERE email = ?1 AND deleted_at = 0", nativeQuery = true)

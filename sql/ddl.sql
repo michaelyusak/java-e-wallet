@@ -27,8 +27,9 @@ create table wallets (
 create table balances (
 	balance_id BIGSERIAL primary key,
 	wallet_id BIGINT not null,
-	balance_asset VARCHAR not null,
+	asset VARCHAR not null,
 	amount NUMERIC not null default 0,
+	frozen NUMERIC not null default 0,
 	created_at BIGINT not null,
 	updated_at BIGINT not null,
 	deleted_at BIGINT not null default 0

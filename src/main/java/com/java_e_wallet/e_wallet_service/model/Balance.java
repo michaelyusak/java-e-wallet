@@ -27,6 +27,9 @@ public class Balance {
     @Column(name = "amount")
     private double amount;
 
+    @Column(name = "frozen")
+    private double frozen;
+
     @Column(name = "created_at", nullable = false)
     private Long createdAt;
 
