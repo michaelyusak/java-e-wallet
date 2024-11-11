@@ -1,5 +1,6 @@
 package com.java_e_wallet.e_wallet_service.repository;
 
+import java.time.Instant;
 import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -18,6 +19,10 @@ public interface WalletRepo extends JpaRepository<Wallet, Long> {
     @Modifying
     @Query(value = "INSERT INTO wallets (user_id, created_at, updated_at) VALUES (?1, ?2, ?2)", nativeQuery = true)
     void createWallet(Long userId, Long now);
+
+    default void createWallet(Long userId) {
+        createWallet(userId, Instant.now().toEpochMilli());
+    }
 
     @Query(value = "SELECT wallet_id, wallet_number, user_id, created_at, updated_at, deleted_at FROM wallets WHERE user_id = ?1 AND deleted_at = 0", nativeQuery = true)
     Optional<Wallet> getWalletByUserId(Long userId);

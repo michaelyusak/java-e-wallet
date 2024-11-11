@@ -1,6 +1,5 @@
 package com.java_e_wallet.e_wallet_service.service;
 
-import java.time.Instant;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,7 +41,7 @@ public class AuthService {
 
         String hash = HashHelper.hash(newUser.getPassword());
 
-        userRepo.registerUser(newUser.getEmail(), newUser.getName(), hash, Instant.now().toEpochMilli());
+        userRepo.registerUser(newUser.getEmail(), newUser.getName(), hash);
 
         Optional<User> user = userRepo.getUserByEmail(newUser.getEmail());
         if (!user.isPresent()) {
@@ -51,9 +50,7 @@ public class AuthService {
 
         User registeredUser = user.get();
 
-        Long now = Instant.now().toEpochMilli();
-
-        walletRepo.createWallet(registeredUser.getUserId(), now);
+        walletRepo.createWallet(registeredUser.getUserId());
 
         return registeredUser;
     }
