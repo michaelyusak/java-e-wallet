@@ -10,25 +10,25 @@ import lombok.Getter;
 
 @Getter
 @Entity
-@Table(name = "balances")
-public class Balance {
-
+@Table(name = "transactions")
+public class Transaction {
+    
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "balance_id")
-    private Long balanceId;
+    @Column(name = "transaction_id")
+    private Long transactionId;
 
-    @Column(name = "wallet_id")
-    private Long walletId;
+    @Column(name = "sender_wallet_id")
+    private Long senderWalletId;
+
+    @Column(name = "recipient_wallet_id")
+    private Long recipientWalletId;
 
     @Column(name = "asset")
     private String asset;
 
     @Column(name = "amount")
     private double amount;
-
-    @Column(name = "frozen")
-    private double frozen;
 
     @Column(name = "created_at", nullable = false)
     private Long createdAt;
@@ -39,17 +39,6 @@ public class Balance {
     @Column(name = "deleted_at", nullable = false)
     private Long deletedAt = 0L;
 
-    public Balance() {
-    }
-
-    public Balance(
-            Long walletId,
-            String asset,
-            double amount,
-            double frozen) {
-        this.walletId = walletId;
-        this.asset = asset;
-        this.amount = amount;
-        this.frozen = frozen;
+    public Transaction() {
     }
 }

@@ -1,6 +1,6 @@
 \c java_e_Wallet_db;
 
-drop table if exists users, wallets, balances;
+drop table if exists users, wallets, balances, transactions;
 drop sequence if exists wallet_number_seq cascade;
 
 create sequence wallet_number_seq;
@@ -30,6 +30,17 @@ create table balances (
 	asset VARCHAR not null,
 	amount NUMERIC not null default 0,
 	frozen NUMERIC not null default 0,
+	created_at BIGINT not null,
+	updated_at BIGINT not null,
+	deleted_at BIGINT not null default 0
+);
+
+create table transactions (
+	transaction_id BIGSERIAL primary key,
+	sender_wallet_id BIGINT not null,
+	recipient_wallet_id BIGINT not null,
+	asset VARCHAR not null,
+	amount NUMERIC not null,
 	created_at BIGINT not null,
 	updated_at BIGINT not null,
 	deleted_at BIGINT not null default 0
