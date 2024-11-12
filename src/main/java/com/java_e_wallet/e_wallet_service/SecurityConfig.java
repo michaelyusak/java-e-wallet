@@ -27,8 +27,7 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-            .csrf()
-            .disable()
+            .csrf().disable()
             .authorizeHttpRequests()
             .requestMatchers(HttpMethod.GET, "/health").permitAll()
             .requestMatchers(HttpMethod.POST, "/auth/**").permitAll()

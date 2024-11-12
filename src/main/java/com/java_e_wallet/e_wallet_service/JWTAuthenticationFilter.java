@@ -44,9 +44,15 @@ public class JWTAuthenticationFilter extends OncePerRequestFilter {
             @NonNull HttpServletRequest request,
             @NonNull HttpServletResponse response,
             @NonNull FilterChain filterChain) throws ServletException, IOException {
+        final String path = request.getRequestURI();
         final String authHeader = request.getHeader("Authorization");
 
         try {
+            if (path.equals("/health") || path.startsWith("/auth/")) {
+                filterChain.doFilter(request, response);
+                return;
+            }
+
             if (authHeader == null || !authHeader.startsWith("Bearer ")) {
                 ErrorResponseDTO res = new ErrorResponseDTO(HttpStatus.FORBIDDEN.value(), "need access token", "");
 

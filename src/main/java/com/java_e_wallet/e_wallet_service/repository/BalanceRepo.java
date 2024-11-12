@@ -21,7 +21,7 @@ public interface BalanceRepo extends JpaRepository<Balance, Long> {
 
     @Transactional
     @Modifying
-    @Query(value = "UPDATE balances SET amount = ?1, frozen = ?2, updated_at = ?3 WHERE balance_id = ?4")
+    @Query(value = "UPDATE balances SET amount = ?1, frozen = ?2, updated_at = ?3 WHERE balance_id = ?4", nativeQuery = true)
     void freezeBalance(Double amount, Double frozen, Long now, Long balanceId);
 
     default void freezeBalance(Double amount, Double frozen, Long balanceId) {
