@@ -1,3 +1,4 @@
+create database java_e_wallet_db;
 \c java_e_Wallet_db;
 
 drop table if exists users, wallets, balances, transactions;

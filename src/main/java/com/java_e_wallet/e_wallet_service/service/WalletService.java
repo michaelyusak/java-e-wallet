@@ -84,7 +84,7 @@ public class WalletService {
                     String.format("insufficient %s balance", asset), null);
         }
 
-        balanceRepo.freezeBalance(senderBalance.getAmount() - amount, senderBalance.getFrozen() + amount, userId);
+        balanceRepo.freezeBalance(amount, userId);
 
         transactionRepo.addTransaction(senderWallet.getWalletId(), recipientWallet.getWalletId(), asset, amount);
 
@@ -100,9 +100,9 @@ public class WalletService {
 
         Balance recipientBalance = recipientBln.get();
 
-        balanceRepo.addBalance(recipientBalance.getAmount() + amount, recipientBalance.getBalanceId());
+        balanceRepo.addBalance(amount, recipientBalance.getBalanceId());
 
-        balanceRepo.unfreezeBalance(senderBalance.getFrozen() - amount, userId);
+        balanceRepo.unfreezeBalance(amount, userId);
 
         return new Balance(senderBalance.getWalletId(), senderBalance.getAsset(), senderBalance.getAmount() - amount,
                 senderBalance.getFrozen());
