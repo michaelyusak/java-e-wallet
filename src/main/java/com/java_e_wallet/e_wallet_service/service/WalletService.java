@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
+import com.java_e_wallet.e_wallet_service.Adaptor.Kafka;
+import com.java_e_wallet.e_wallet_service.config.Config;
 import com.java_e_wallet.e_wallet_service.exception.AppException;
 import com.java_e_wallet.e_wallet_service.model.Balance;
 import com.java_e_wallet.e_wallet_service.model.Wallet;
@@ -103,6 +105,8 @@ public class WalletService {
         balanceRepo.addBalance(amount, recipientBalance.getBalanceId());
 
         balanceRepo.unfreezeBalance(amount, userId);
+
+        Kafka.publish(Config.getKafkaTransactionTopicName(), "test");
 
         return new Balance(senderBalance.getWalletId(), senderBalance.getAsset(), senderBalance.getAmount() - amount,
                 senderBalance.getFrozen());

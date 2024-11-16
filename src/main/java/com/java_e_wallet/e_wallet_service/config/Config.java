@@ -17,10 +17,13 @@ public class Config {
     private Long RefreshTokenTTL; // in minutes
     private String TokenSecretKey;
     private String TokenIssuer;
+    private String KafkaAddress;
+    private String KafkaTransactionTopicName;
 
     private static Config configInstance;
 
-    private Config() {}
+    private Config() {
+    }
 
     private Optional<JSONObject> readConfig() {
         JSONParser parser = new JSONParser();
@@ -63,6 +66,8 @@ public class Config {
         configInstance.RefreshTokenTTL = (Long) configData.get("refresh_token_ttl");
         configInstance.TokenSecretKey = (String) configData.get("token_secret_key");
         configInstance.TokenIssuer = (String) configData.get("token_issuer");
+        configInstance.KafkaAddress = (String) configData.get("kafka_address");
+        configInstance.KafkaTransactionTopicName = (String) configData.get("kafka_transaction_topic_name");
     }
 
     public static Config getConfigInstance() {
@@ -70,5 +75,21 @@ public class Config {
             throw new IllegalStateException("Config must be initialized first by calling Init().");
         }
         return configInstance;
+    }
+
+    public static String getKafkaAddress() {
+        if (configInstance == null) {
+            throw new IllegalStateException("Config must be initialized first by calling Init().");
+        }
+
+        return configInstance.KafkaAddress;
+    }
+
+    public static String getKafkaTransactionTopicName() {
+        if (configInstance == null) {
+            throw new IllegalStateException("Config must be initialized first by calling Init().");
+        }
+
+        return configInstance.KafkaTransactionTopicName;
     }
 }
