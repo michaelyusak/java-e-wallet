@@ -17,10 +17,12 @@ import org.springframework.web.bind.annotation.RestController;
 import com.java_e_wallet.e_wallet_service.dto.BalanceResponseDTO;
 import com.java_e_wallet.e_wallet_service.dto.ResponseDTO;
 import com.java_e_wallet.e_wallet_service.dto.TransactionRequestDTO;
+import com.java_e_wallet.e_wallet_service.dto.TransactionResultDTO;
 import com.java_e_wallet.e_wallet_service.dto.WalletResponseDTO;
 import com.java_e_wallet.e_wallet_service.exception.AppException;
 import com.java_e_wallet.e_wallet_service.model.Balance;
 import com.java_e_wallet.e_wallet_service.model.CustomUserDetails;
+import com.java_e_wallet.e_wallet_service.model.TransactionResult;
 import com.java_e_wallet.e_wallet_service.model.Wallet;
 import com.java_e_wallet.e_wallet_service.service.WalletService;
 
@@ -80,9 +82,9 @@ public class WalletController {
 
         CustomUserDetails user = (CustomUserDetails) authentication.getPrincipal();
 
-        Balance newBalance = walletService.transferAsset(user.getId(), transactionRequest.getRecipientWalletNumber(), transactionRequest.getAsset(), transactionRequest.getAmount());
+        TransactionResult result = walletService.transferAsset(user.getId(), transactionRequest.getRecipientWalletNumber(), transactionRequest.getAsset(), transactionRequest.getAmount());
 
-        return new ResponseDTO(HttpStatus.CREATED.value(), "transaction executed", new BalanceResponseDTO(newBalance));
+        return new ResponseDTO(HttpStatus.CREATED.value(), "transaction executed", new TransactionResultDTO(result));
     }
 
     @PostMapping(path = "/{wallet_number}/balance/{asset}")

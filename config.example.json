@@ -2,5 +2,7 @@
     "access_token_ttl": 60,
     "refresh_token_ttl": 1440,
     "token_secret_key": "secret",
-    "token_issuer": "issuer"
+    "token_issuer": "issuer",
+    "kafka_address": "localhost:29092",
+    "kafka_transaction_topic_name": "transactions"
 }

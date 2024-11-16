@@ -1,5 +1,6 @@
 package com.java_e_wallet.e_wallet_service.service;
 
+import java.time.Instant;
 import java.util.List;
 import java.util.Optional;
 
@@ -7,10 +8,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
-import com.java_e_wallet.e_wallet_service.Adaptor.Kafka;
+import com.java_e_wallet.e_wallet_service.adaptor.Kafka;
 import com.java_e_wallet.e_wallet_service.config.Config;
 import com.java_e_wallet.e_wallet_service.exception.AppException;
 import com.java_e_wallet.e_wallet_service.model.Balance;
+import com.java_e_wallet.e_wallet_service.model.TransactionResult;
+import com.java_e_wallet.e_wallet_service.model.TransactionSummary;
 import com.java_e_wallet.e_wallet_service.model.Wallet;
 import com.java_e_wallet.e_wallet_service.repository.BalanceRepo;
 import com.java_e_wallet.e_wallet_service.repository.TransactionRepo;
@@ -54,7 +57,7 @@ public class WalletService {
     }
 
     @Transactional
-    public Balance transferAsset(Long userId, String recipientWalletNumber, String asset, double amount) {
+    public TransactionResult transferAsset(Long userId, String recipientWalletNumber, String asset, double amount) {
         Optional<Wallet> senderWlt = walletRepo.getWalletByUserId(userId);
         if (!senderWlt.isPresent()) {
             throw new AppException(HttpStatus.FORBIDDEN.value(), "sender wallet not found", null);
@@ -88,7 +91,8 @@ public class WalletService {
 
         balanceRepo.freezeBalance(amount, userId);
 
-        transactionRepo.addTransaction(senderWallet.getWalletId(), recipientWallet.getWalletId(), asset, amount);
+        Long transactionId = transactionRepo.addTransaction(senderWallet.getWalletId(), recipientWallet.getWalletId(),
+                asset, amount);
 
         Optional<Balance> recipientBln = balanceRepo.getAssetBalanceByWalletId(recipientWallet.getUserId(), asset);
         if (!recipientBln.isPresent()) {
@@ -106,10 +110,18 @@ public class WalletService {
 
         balanceRepo.unfreezeBalance(amount, userId);
 
-        Kafka.publish(Config.getKafkaTransactionTopicName(), "test");
+        String requestId = "transfer_" + senderWallet.getWalletNumber() + "_to_" + recipientWallet.getWalletNumber()
+                + "_" + String.valueOf(Instant.now().getEpochSecond());
 
-        return new Balance(senderBalance.getWalletId(), senderBalance.getAsset(), senderBalance.getAmount() - amount,
-                senderBalance.getFrozen());
+        TransactionSummary summary = new TransactionSummary(transactionId, senderWallet.getUserId(),
+                recipientWallet.getUserId(), requestId, asset, amount);
+
+        Kafka.publish(Config.getKafkaTransactionTopicName(), requestId, summary);
+
+        return new TransactionResult(
+                new Balance(senderBalance.getBalanceId(), senderBalance.getWalletId(), senderBalance.getAsset(), senderBalance.getAmount() - amount,
+                        senderBalance.getFrozen()),
+                summary);
     }
 
     @Transactional

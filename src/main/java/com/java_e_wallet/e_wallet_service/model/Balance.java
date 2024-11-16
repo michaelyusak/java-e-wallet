@@ -43,10 +43,12 @@ public class Balance {
     }
 
     public Balance(
+            Long balanceId,
             Long walletId,
             String asset,
             double amount,
             double frozen) {
+        this.balanceId = balanceId;
         this.walletId = walletId;
         this.asset = asset;
         this.amount = amount;

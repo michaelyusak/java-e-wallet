@@ -1,4 +1,4 @@
-package com.java_e_wallet.e_wallet_service.Adaptor;
+package com.java_e_wallet.e_wallet_service.adaptor;
 
 import java.util.Properties;
 
@@ -10,32 +10,25 @@ import org.apache.kafka.common.serialization.StringSerializer;
 
 import com.java_e_wallet.e_wallet_service.config.Config;
 
+import io.confluent.kafka.serializers.KafkaJsonSerializer;
+
 public class Kafka {
-    private static Producer<String, String> producer;
-    private static Kafka kafkaInstance;
+    private static Producer<String, Object> producer;
 
     public static void Init() {
         Properties properties = new Properties();
 
         properties.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, Config.getKafkaAddress());
         properties.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class.getName());
-        properties.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, StringSerializer.class.getName());
+        properties.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, KafkaJsonSerializer.class.getName());
         properties.put(ProducerConfig.ACKS_CONFIG, "all");
         properties.put(ProducerConfig.CLIENT_ID_CONFIG, "e-wallet-producer");
-
-        if (kafkaInstance == null) {
-            kafkaInstance = new Kafka();
-        }
 
         producer = new KafkaProducer<>(properties);
     }
 
-    public Kafka getKafkaInstance() {
-        return kafkaInstance;
-    }
-
-    public static void publish(String topic, String message) {
-        ProducerRecord<String, String> record = new ProducerRecord<String, String>(topic, message);
+    public static void publish(String topic, String key, Object message) {
+        ProducerRecord<String, Object> record = new ProducerRecord<String, Object>(topic, key, message);
 
         producer.send(record);
 
