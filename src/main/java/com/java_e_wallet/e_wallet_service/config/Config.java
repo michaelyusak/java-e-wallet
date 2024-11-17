@@ -9,6 +9,8 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
+import com.java_e_wallet.e_wallet_service.adaptor.LedgerServiceAdaptor;
+
 import lombok.Getter;
 
 @Getter
@@ -19,6 +21,7 @@ public class Config {
     private String TokenIssuer;
     private String KafkaAddress;
     private String KafkaTransactionTopicName;
+    private String LedgerServiceAddress;
 
     private static Config configInstance;
 
@@ -68,6 +71,9 @@ public class Config {
         configInstance.TokenIssuer = (String) configData.get("token_issuer");
         configInstance.KafkaAddress = (String) configData.get("kafka_address");
         configInstance.KafkaTransactionTopicName = (String) configData.get("kafka_transaction_topic_name");
+        configInstance.LedgerServiceAddress = (String) configData.get("ledger_service_address");
+
+        LedgerServiceAdaptor.Init();
     }
 
     public static Config getConfigInstance() {
@@ -91,5 +97,13 @@ public class Config {
         }
 
         return configInstance.KafkaTransactionTopicName;
+    }
+
+    public static String getLedgerServiceAddress() {
+        if (configInstance == null) {
+            throw new IllegalStateException("Config must be initialized first by calling Init().");
+        }
+
+        return configInstance.LedgerServiceAddress;
     }
 }

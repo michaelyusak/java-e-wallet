@@ -4,5 +4,6 @@
     "token_secret_key": "secret",
     "token_issuer": "issuer",
     "kafka_address": "localhost:29092",
-    "kafka_transaction_topic_name": "transactions"
+    "kafka_transaction_topic_name": "transactions",
+    "ledger_service_address": "http://localhost:8082"
 }
