@@ -50,8 +50,6 @@ public class WalletController {
 
         Optional<Wallet> wallet = walletService.getUserWallet(user.getId());
 
-        System.out.println(user.getEmail());
-
         return new ResponseDTO(HttpStatus.OK.value(), "ok",
                 wallet.isPresent() ? new WalletResponseDTO(wallet.get()) : null);
     }
